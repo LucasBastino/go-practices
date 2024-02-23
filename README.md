@@ -1,1 +1,1 @@
-these are go practices
+go practices
