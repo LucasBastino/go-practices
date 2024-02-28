@@ -10,7 +10,10 @@ func main() {
 	// sliceConMake()
 	// copySlice()
 	// arrYsliceComoArgs()
-	forOptimizado()
+	// forOptimizado()
+	// viewsSlice()
+	fmt.Println(funcionSumaConVariosArgs(10, 4, 5))
+
 }
 
 // una variable que contiene un vector se declara con
@@ -108,15 +111,38 @@ func main() {
 // 	// con un if para que el programa no falle durante la ejecucion
 // }
 
-func forOptimizado() {
-	juegos := []string{"crash", "mario", "winning eleven", "tekken"}
-	for i, juego := range juegos {
-		fmt.Println(i, ":", juego)
-	}
+// vistas
+// func viewsSlice() {
+// 	slice1 := []int{1, 10, 3, 4, 5}
+// 	view1 := slice1[1:4]
+// 	view1[0] = 2
+// 	view2 := slice1[0:2]
+// 	view3 := slice1[3:]
+// 	view4 := slice1[:]
 
-	// si no queres indicar el indice se escribe asi
-	for _, juego := range juegos {
-		fmt.Println(juego)
-	}
+// 	fmt.Println(view1)
+// 	fmt.Println(view2)
+// 	fmt.Println(view3)
+// 	fmt.Println(view4)
+// }
 
+// func forOptimizado() {
+// 	juegos := []string{"crash", "mario", "winning eleven", "tekken"}
+// 	for i, juego := range juegos {
+// 		fmt.Println(i, ":", juego)
+// 	}
+
+// 	// si no queres indicar el indice se escribe asi
+// 	for _, juego := range juegos {
+// 		fmt.Println(juego)
+// 	}
+
+// }
+
+func funcionSumaConVariosArgs(numeros ...int) int {
+	sumaTotal := 0
+	for _, numero := range numeros {
+		sumaTotal += numero
+	}
+	return sumaTotal
 }
