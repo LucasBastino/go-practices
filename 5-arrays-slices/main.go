@@ -12,7 +12,12 @@ func main() {
 	// arrYsliceComoArgs()
 	// forOptimizado()
 	// viewsSlice()
-	fmt.Println(funcionSumaConVariosArgs(10, 4, 5))
+	// fmt.Println(funcionSumaConVariosArgs(10, 4, 5))
+	// fmt.Println(concatConVariosArgs("hola", "como", "andas", "crack", "?"))
+	// operadorDifusorSuma()
+	// operadorDifusorConcat()
+	// operadorDifusorAppend()
+	longitudDeString()
 
 }
 
@@ -139,10 +144,47 @@ func main() {
 
 // }
 
-func funcionSumaConVariosArgs(numeros ...int) int {
-	sumaTotal := 0
-	for _, numero := range numeros {
-		sumaTotal += numero
-	}
-	return sumaTotal
+// func funcionSumaConVariosArgs(numeros ...int) int {
+// 	sumaTotal := 0
+// 	for _, numero := range numeros {
+// 		sumaTotal += numero
+// 	}
+// 	return sumaTotal
+// }
+
+// func concatConVariosArgs(palabras ...string) string {
+// 	oracion := ""
+// 	for _, palabra := range palabras {
+// 		oracion += " " + palabra
+// 	}
+// 	return oracion
+// }
+
+// func operadorDifusorSuma() {
+// 	valores := []int{1, 2, 3, 4, 5}
+// 	// sumaTotal := funcionSumaConVariosArgs(valores)
+// // asi no se puede, estas pasando como argumento una variable tipo []int
+// // tenes que operar con los elementos del slice, para eso se usan los ...
+// 	sumaTotal := funcionSumaConVariosArgs(valores...)
+// 	fmt.Println(sumaTotal)
+// }
+
+// func operadorDifusorConcat() {
+// 	palabras := []string{"hola", "crack", "todo", "tranca?"}
+// 	oracion := concatConVariosArgs(palabras...)
+// 	fmt.Println(oracion)
+// }
+
+// func operadorDifusorAppend() {
+// 	slice1 := []int{1, 2, 3, 4}
+// 	slice2 := []int{5, 6, 7}
+// 	// slice3 := append(slice1, slice2)
+// 	// // lo mismo que en las demas funciones, no compila asi directamente, le estoy queriendo agregar el slice entero
+// 	slice3 := append(slice1, slice2...)
+// 	fmt.Println(slice3)
+// }
+
+func longitudDeString() {
+	str1 := "hola crack 10"
+	fmt.Println(len(str1))
 }
