@@ -1,16 +1,32 @@
 package main
 
 import (
-	f "fmt"
+	"fmt"
 
+	// aca pone test1 porque el package no tiene el mismo nombre de la carpeta
+	test1 "github.com/LucasBastino/practicas-go/folderTestPackage"
+	// y aca no pone nada porque tiene el mismo nombre
 	"github.com/LucasBastino/practicas-go/sliceMethods"
 )
 
 func main() {
-	f.Println("structs exercises:")
+	fmt.Println("structs exercises:")
 	// crearStruct()
 	// borrarDuplicados()
-	sliceMethods.Mostrar2()
+	slice1 := []string{"hola", "como", "va"}
+	slice2 := []int{1, 2, 3}
+	sliceMethods.ImprimirSlice(slice1)
+	// sliceMethods.ImprimirSlice(slice2)
+	// sliceMethods.MostrarElemento(slice1, 2)
+	// sliceMethods.MostrarElemento(slice2, 1)
+	slice1 = (sliceMethods.BorrarElemento(slice1, 1))
+	slice2 = sliceMethods.BorrarElemento(slice2, 1)
+	fmt.Println("desde main.go")
+	fmt.Println(slice1)
+	fmt.Println(slice2)
+	// fmt.Println(slice2)
+
+	test1.FuncionPrueba()
 }
 
 // func crearStruct() {

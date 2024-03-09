@@ -2,8 +2,16 @@ package sliceMethods
 
 import "fmt"
 
-func Mostrar2() {
-	fmt.Println("muestro 2 desde slicemethdosss")
+func ImprimirSlice[Slice ~[]sli, sli any](slice Slice) {
+	fmt.Println(slice)
+}
+
+// func MostrarElemento[Slice ~[]sli1, sli1 any](slice Slice, elemento int) {
+// 	fmt.Println(slice[elemento])
+// }
+
+func BorrarElemento[Slice ~[]sli1, sli1 any](slice Slice, elemento int) Slice {
+	return append(slice[:elemento], slice[elemento+1:]...)
 }
 
 // hacer un delete desde hasta
@@ -16,7 +24,3 @@ func Mostrar2() {
 // func deleteOne(slice []int, i int) []int {
 // 	return append(slice[:i], slice[i+1:]...)
 // }
-
-func deleteOne(s S, i int) {
-	return append(slice[:i], slice[i+1:]...)
-}
