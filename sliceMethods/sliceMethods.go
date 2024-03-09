@@ -2,16 +2,40 @@ package sliceMethods
 
 import "fmt"
 
-func ImprimirSlice[Slice ~[]sli, sli any](slice Slice) {
+// metodo especifico para testear en 9-packages
+func ImprimirDesdeSliceMethods[typeSlice ~[]s, s any](varSlice typeSlice) {
+	fmt.Println(varSlice, "desde sliceMethods")
+}
+
+// metodos generales
+func PrintSlice[Slice ~[]sli, sli any](slice Slice) {
 	fmt.Println(slice)
 }
 
-// func MostrarElemento[Slice ~[]sli1, sli1 any](slice Slice, elemento int) {
-// 	fmt.Println(slice[elemento])
+func PrintSliceLine[typeSlice ~[]s, s any](varSlice typeSlice) {
+	for _, element := range varSlice {
+		fmt.Println(element)
+	}
+}
+
+// func PrintSliceLineV2(letras ...string) {
+// 	for _, letra := range letras {
+// 		fmt.Println(letra)
+// 	}
 // }
 
-func BorrarElemento[Slice ~[]sli1, sli1 any](slice Slice, elemento int) Slice {
-	return append(slice[:elemento], slice[elemento+1:]...)
+func DeleteOneByIndex[typeSlice ~[]s, s any](varSlice typeSlice, index int) typeSlice {
+	return append(varSlice[:index], varSlice[index+1:]...)
+}
+
+func DeleteOneByValue[typeSlice ~[]s, s any](varSlice typeSlice, valueToDelete any) typeSlice {
+	var indexToDelete int
+	for index := range varSlice {
+		if varSlice[index] == valueToDelete {
+			indexToDelete = index
+		}
+	}
+	return DeleteOneByIndex(varSlice, indexToDelete)
 }
 
 // hacer un delete desde hasta
@@ -20,7 +44,5 @@ func BorrarElemento[Slice ~[]sli1, sli1 any](slice Slice, elemento int) Slice {
 
 // }
 
-// primero hago uno de a 1
-// func deleteOne(slice []int, i int) []int {
-// 	return append(slice[:i], slice[i+1:]...)
-// }
+//  conservar
+// conservar desde hasta

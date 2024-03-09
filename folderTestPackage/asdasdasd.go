@@ -2,6 +2,7 @@ package test1
 
 import "fmt"
 
-func FuncionPrueba() {
-	fmt.Println("esta es una funcion de prueba desde el package test1")
+func ImprimirDesdeTest1[typeSlice ~[]s, s any](varSlice typeSlice) {
+
+	fmt.Println(varSlice, "desde Test1")
 }
