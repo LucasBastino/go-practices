@@ -25,17 +25,60 @@ func PrintSliceLine[typeSlice ~[]s, s any](varSlice typeSlice) {
 // }
 
 func DeleteOneByIndex[typeSlice ~[]s, s any](varSlice typeSlice, index int) typeSlice {
-	return append(varSlice[:index], varSlice[index+1:]...)
+	if index == -1 {
+		return varSlice
+	} else {
+		return append(varSlice[:index], varSlice[index+1:]...)
+	}
+
 }
 
-func DeleteOneByValue[typeSlice ~[]s, s any](varSlice typeSlice, valueToDelete any) typeSlice {
-	var indexToDelete int
-	for index := range varSlice {
-		if varSlice[index] == valueToDelete {
-			indexToDelete = index
+// func DeleteOneByValue[typeSlice ~[]s, s any](varSlice typeSlice, valueToDelete any) typeSlice {
+// 	var slice []any
+// 	slice = append(slice, varSlice...)
+// 	var indexToDelete int
+// 	for index := range varSlice {
+// 		if varSlice[index] == valueToDelete {
+// 			indexToDelete = index
+// 		}
+// 	}
+// 	return DeleteOneByIndex(varSlice, indexToDelete)
+// }
+
+func FindIndex[typeSlice ~[]c, c comparable](varSlice typeSlice, value c) int {
+	for i := 0; i < len(varSlice); i++ {
+		if varSlice[i] == value {
+			return i
 		}
 	}
-	return DeleteOneByIndex(varSlice, indexToDelete)
+	fmt.Println("No se encontro coincidencia")
+	return -1
+}
+
+// func FindIndex2[typeSlice ~[]E, E comparable](varSlice typeSlice, value E) int {
+// 	for i, valor := range varSlice {
+// 		if valor == value {
+// 			return i
+// 		}
+// 	}
+// 	return -1
+// }
+
+//  es innecesario, funciona igual que append
+func Push[typeSlice ~[]E, E any](varSlice typeSlice, elemento E) typeSlice {
+	return append(varSlice, elemento)
+}
+
+func Pop[typeSlice ~[]S, S any](varSlice typeSlice) (typeSlice, any) {
+	elemento := varSlice[len(varSlice)-1]
+	varSlice = DeleteOneByIndex(varSlice, len(varSlice)-1)
+	return varSlice, elemento
+}
+
+func Shift[typeSlice ~[]S, S any](varSlice typeSlice) (typeSlice, any) {
+	elemento := varSlice[0]
+	varSlice = DeleteOneByIndex(varSlice, 0)
+	return varSlice, elemento
 }
 
 // hacer un delete desde hasta
