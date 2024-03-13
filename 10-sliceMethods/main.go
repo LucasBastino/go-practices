@@ -33,4 +33,9 @@ func main() {
 	f.Println(elementoShift1, slice1)
 	slice2, elementoShift2 := sliceMethods.Shift(slice2)
 	f.Println(elementoShift2, slice2)
+	elemento1 := "H"
+	slice1 = sliceMethods.Unshift(slice1, elemento1)
+	elemento2 := 17
+	slice2 = sliceMethods.Unshift(slice2, elemento2)
+	f.Println(slice1, slice2)
 }

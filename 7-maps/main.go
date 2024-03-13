@@ -47,19 +47,22 @@ func leerElementosEnMapas() {
 		35658478: "Ana",
 		44886396: "",
 	}
-	dato1 := map1[32788265]
+	// dato1 := map1[32788265]
 
-	dato2, existe := map1[44886396]
-	// dato2, existe := map1[11111111]
-	// si el dato esta vacio o no existe devolvera el valor cero
-	// por lo que para saber si esta vacio requiere de un segundo argumento
+	// dato2, existe := map1[44886396]
+	// // dato2, existe := map1[11111111]
+	// // si el dato esta vacio o no existe devolvera el valor cero
+	// // por lo que para saber si esta vacio requiere de un segundo argumento
 
-	if existe {
-		fmt.Println("el elemento existe y esta vacio")
-	} else {
-		fmt.Println("el elemento no existe")
+	// if existe {
+	// 	fmt.Println("el elemento existe y esta vacio")
+	// } else {
+	// 	fmt.Println("el elemento no existe")
+	// }
+	// fmt.Println("dato1:", dato1)
+	// fmt.Println("dato2:", dato2)
+
+	for etiqueta, nombre := range map1 {
+		fmt.Println(etiqueta, nombre)
 	}
-	fmt.Println("dato1:", dato1)
-	fmt.Println("dato2:", dato2)
-
 }

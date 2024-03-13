@@ -45,6 +45,10 @@ func DeleteOneByIndex[typeSlice ~[]s, s any](varSlice typeSlice, index int) type
 // 	return DeleteOneByIndex(varSlice, indexToDelete)
 // }
 
+// type comparable sirve para comparar cualquier tipo (int, string, etc)
+// pero no para operar
+// type any sirve para operar con cualquier tipo (int, string, etc)
+// pero no para comparar
 func FindIndex[typeSlice ~[]c, c comparable](varSlice typeSlice, value c) int {
 	for i := 0; i < len(varSlice); i++ {
 		if varSlice[i] == value {
@@ -79,6 +83,11 @@ func Shift[typeSlice ~[]S, S any](varSlice typeSlice) (typeSlice, any) {
 	elemento := varSlice[0]
 	varSlice = DeleteOneByIndex(varSlice, 0)
 	return varSlice, elemento
+}
+
+func Unshift[typeSlice ~[]E, E any](varSlice typeSlice, elemento E) typeSlice {
+	varSlice2 := []E{elemento}
+	return append(varSlice2, varSlice...)
 }
 
 // hacer un delete desde hasta
