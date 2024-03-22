@@ -24,7 +24,6 @@ func main() {
 	rendirParciales(alumno1)
 	// fmt.Println(alumno1.calificaciones)
 	pasoDeAño(alumno1)
-
 }
 
 func imprimirParciales(alumno Alumno) {
@@ -85,8 +84,8 @@ func rendirParciales(alumno Alumno) {
 }
 
 func pasoDeAño(alumno Alumno) {
-
 	// promedio := 0
+	aproboMaterias := []bool{}
 	for materia, parciales := range alumno.calificaciones {
 		var suma float64 = 0
 		for i := range parciales {
@@ -97,9 +96,32 @@ func pasoDeAño(alumno Alumno) {
 		promedio := math.Round(suma/float64(len(parciales))*100) / 100
 		fmt.Println(promedio)
 		if promedio >= 7 {
+			aproboMaterias = append(aproboMaterias, true)
 			fmt.Print("APROBO\n\n")
+
 		} else {
+			aproboMaterias = append(aproboMaterias, false)
 			fmt.Print("DESAPROBO\n\n")
 		}
 	}
+	if aprobo(aproboMaterias) {
+		fmt.Println("PASO DE AÑO")
+	} else {
+		fmt.Println("NO PASO DE AÑO")
+	}
+}
+
+func aprobo(aproboMaterias []bool) bool {
+	var aprobado bool
+
+	for _, value := range aproboMaterias {
+		if value {
+			aprobado = true
+			continue
+		} else {
+			aprobado = false
+			break
+		}
+	}
+	return aprobado
 }
