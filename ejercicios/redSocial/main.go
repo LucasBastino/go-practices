@@ -78,7 +78,6 @@ func (u *Usuario) agregarAmigo(nuevoAmigo Usuario) {
 // }
 
 func (u *Usuario) eliminarAmigo(amigo Usuario) {
-
 	for i, value := range u.amigos {
 		if value.nombre == amigo.nombre {
 			u.amigos = append(u.amigos[:i], u.amigos[i+1:]...)

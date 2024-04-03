@@ -1,6 +1,9 @@
 package sliceMethods
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 // metodo especifico para testear en 9-packages
 func ImprimirDesdeSliceMethods[typeSlice ~[]s, s any](varSlice typeSlice) {
@@ -36,6 +39,28 @@ func DeleteOneByIndex[typeSlice ~[]s, s any](varSlice typeSlice, index int) type
 func DeleteOneByValue[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToDelete c) typeSlice {
 	indexToDelete := FindIndex(varSlice, valueToDelete)
 	return DeleteOneByIndex(varSlice, indexToDelete)
+}
+
+func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete any) typeSlice {
+	for _, value := range varSlice {
+		valor1 := reflect.ValueOf(value).FieldByName(field).Interface().(string)
+		fmt.Println(valor1, valueToDelete)
+		if string(valor1) == valueToDelete {
+			fmt.Println("son iguales")
+		}
+		// // fmt.Println(i, reflect.ValueOf(value).FieldByName(field))
+		// if reflect.ValueOf(value).FieldByName(field) == valueToDelete {
+		// 	// varSlice = DeleteOneByIndex(varSlice, i)
+		// 	fmt.Println("el valor buscado", valueToDelete, "es igual a el valor del campo:", field)
+		// }
+	}
+	return varSlice
+}
+
+func ShowField[typeSlice ~[]e, e any](varSlice typeSlice, field string) {
+	for i, value := range varSlice {
+		fmt.Println(i, reflect.ValueOf(value).FieldByName(field))
+	}
 }
 
 // type comparable sirve para comparar cualquier tipo (int, string, etc)
