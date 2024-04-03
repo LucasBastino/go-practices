@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/LucasBastino/practicas-go/sliceMethods"
 )
 
 type Usuario struct {
@@ -23,13 +25,14 @@ func main() {
 	luana := admin.crearYGuardar(Usuario{"Luana", 24, []Usuario{}, map[string]string{}, true})
 	lucas.agregarAmigo(jorge)
 	lucas.agregarAmigo(luana)
-	lucas.publicarPost("Titulo 1", "este es el primer posteo")
-	lucas.publicarPost("Titulo 2", "este es el segundo posteo")
+	// lucas.publicarPost("Titulo 1", "este es el primer posteo")
+	// lucas.publicarPost("Titulo 2", "este es el segundo posteo")
 	lucas.imprimirInfo()
-	lucas.borrarPost("Titulo 1")
+	lucas.eliminarAmigo(jorge)
+	// lucas.borrarPost("Titulo 1")
 	lucas.imprimirInfo()
-	admin.imprimirUsuarios()
-	admin.promedioEdad()
+	// admin.imprimirUsuarios()
+	// admin.promedioEdad()
 }
 
 func (u Usuario) imprimirInfo() {
@@ -44,6 +47,7 @@ func (u Usuario) imprimirInfo() {
 	for titulo, post := range u.posteos {
 		fmt.Printf("%s:\n%s\n", titulo, post)
 	}
+	fmt.Println("-------------------------------------------------")
 }
 
 // func (u *Usuario) modificarAtributo(atributo string, valor any) {
@@ -81,7 +85,8 @@ func (u *Usuario) eliminarAmigo(amigo Usuario) {
 
 	for i, value := range u.amigos {
 		if value.nombre == amigo.nombre {
-			u.amigos = append(u.amigos[:i], u.amigos[i+1:]...)
+			// u.amigos = append(u.amigos[:i], u.amigos[i+1:]...)
+			u.amigos = sliceMethods.DeleteOneByIndex(u.amigos, i)
 			fmt.Printf("Usuario %v eliminado de tu lista de amigos\n", value.nombre)
 			return
 		}
