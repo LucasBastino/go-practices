@@ -41,18 +41,34 @@ func DeleteOneByValue[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToD
 	return DeleteOneByIndex(varSlice, indexToDelete)
 }
 
+// func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete any) typeSlice {
+// 	for i, value := range varSlice {
+// 		if reflect.ValueOf(value).FieldByName(field).String() == valueToDelete {
+// 			varSlice = DeleteOneByIndex(varSlice, i)
+// 		}
+// 	}
+// 	return varSlice
+// }
+
 func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete any) typeSlice {
-	for _, value := range varSlice {
-		valor1 := reflect.ValueOf(value).FieldByName(field).Interface().(string)
-		fmt.Println(valor1, valueToDelete)
-		if string(valor1) == valueToDelete {
-			fmt.Println("son iguales")
+	tipoDeDato := reflect.TypeOf(valueToDelete)
+	tipoDeDato2 := reflect.ValueOf(tipoDeDato)
+	fmt.Printf("tipo de dato 1: %T valor: %s\n", tipoDeDato, tipoDeDato)
+	fmt.Printf("tipo de dato 2: %T valor: %s\n", tipoDeDato2, tipoDeDato2)
+	// tipoDeDato
+	// int1 := "int"
+	// string1 := "string"
+	// if tipoDeDato == int1 {
+
+	// }
+	fmt.Println("es", reflect.TypeOf(valueToDelete))
+	for i, value := range varSlice {
+		// Convierte un reflect value en int64 y despues en int
+		valor1 := int(reflect.ValueOf(value).FieldByName(field).Int())
+		fmt.Printf("valor 1 %T %v\n", valor1, valor1)
+		if valor1 == valueToDelete {
+			varSlice = DeleteOneByIndex(varSlice, i)
 		}
-		// // fmt.Println(i, reflect.ValueOf(value).FieldByName(field))
-		// if reflect.ValueOf(value).FieldByName(field) == valueToDelete {
-		// 	// varSlice = DeleteOneByIndex(varSlice, i)
-		// 	fmt.Println("el valor buscado", valueToDelete, "es igual a el valor del campo:", field)
-		// }
 	}
 	return varSlice
 }

@@ -8,7 +8,7 @@ func main() {
 	// ingresoYComparo()
 	// opciones()
 	// switchConCondicional()
-	// forContinueYBreak()
+	forContinueYBreak()
 	// forNoIterativo()
 	// forIterativo()
 	// forIterativo2()
@@ -74,22 +74,22 @@ func main() {
 // 	}
 // }
 
-// func forContinueYBreak() {
-// 	for {
-// 		var opcion int
-// 		fmt.Println("ingresa 1 para seguir o 2 para salir")
-// 		fmt.Scan(&opcion)
-// 		if opcion == 1 {
-// 			fmt.Println("elegiste seguir")
-// 			continue
-// 		} else if opcion == 2 {
-// 			fmt.Println("elegiste salir")
-// 			break
-// 		} else {
-// 			fmt.Println("elegiste mal la opcion")
-// 		}
-// 	}
-// }
+func forContinueYBreak() {
+	for {
+		var opcion int
+		fmt.Println("ingresa 1 para seguir o 2 para salir")
+		fmt.Scan(&opcion)
+		if opcion == 1 {
+			fmt.Println("elegiste seguir")
+			continue
+		} else if opcion == 2 {
+			fmt.Println("elegiste salir")
+			break
+		} else {
+			fmt.Println("elegiste mal la opcion")
+		}
+	}
+}
 
 // func forNoIterativo() {
 // 	for opcion := "inicio"; opcion != "salir"; fmt.Scan(&opcion) {
