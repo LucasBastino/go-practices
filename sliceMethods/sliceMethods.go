@@ -51,24 +51,43 @@ func DeleteOneByValue[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToD
 // }
 
 func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete any) typeSlice {
-	tipoDeDato := reflect.TypeOf(valueToDelete)
-	tipoDeDato2 := reflect.ValueOf(tipoDeDato)
-	fmt.Printf("tipo de dato 1: %T valor: %s\n", tipoDeDato, tipoDeDato)
-	fmt.Printf("tipo de dato 2: %T valor: %s\n", tipoDeDato2, tipoDeDato2)
-	// tipoDeDato
-	// int1 := "int"
-	// string1 := "string"
-	// if tipoDeDato == int1 {
-
-	// }
-	fmt.Println("es", reflect.TypeOf(valueToDelete))
-	for i, value := range varSlice {
-		// Convierte un reflect value en int64 y despues en int
-		valor1 := int(reflect.ValueOf(value).FieldByName(field).Int())
-		fmt.Printf("valor 1 %T %v\n", valor1, valor1)
-		if valor1 == valueToDelete {
-			varSlice = DeleteOneByIndex(varSlice, i)
+	tipoDeDato := reflect.TypeOf(valueToDelete).String()
+	switch tipoDeDato {
+	case "int":
+		fmt.Println("tipo de dato INT")
+		for i, value := range varSlice {
+			// Convierte un reflect value en int64 y despues en int
+			if valueToDelete == int(reflect.ValueOf(value).FieldByName(field).Int()) {
+				varSlice = DeleteOneByIndex(varSlice, i)
+			}
 		}
+	case "string":
+		fmt.Println("ES STRING")
+		for i, value := range varSlice {
+			// Refleja el valor del campo solicitado de la variable y lo transforma a string
+			if valueToDelete == reflect.ValueOf(value).FieldByName(field).String() {
+				varSlice = DeleteOneByIndex(varSlice, i)
+			}
+		}
+	case "bool":
+		fmt.Println("es boolean")
+		for i, value := range varSlice {
+			if valueToDelete == reflect.ValueOf(value).FieldByName(field).Bool() {
+				varSlice = DeleteOneByIndex(varSlice, i)
+			}
+
+		}
+	case "float64":
+		fmt.Println("es float")
+		for i, value := range varSlice {
+			valueToCompare := reflect.ValueOf(value).FieldByName(field).Float()
+			fmt.Printf("%T %v\n", valueToCompare, valueToCompare)
+			if valueToCompare == valueToDelete {
+				varSlice = DeleteOneByIndex(varSlice, i)
+			}
+		}
+	default:
+		fmt.Println("no es un tipo soportado")
 	}
 	return varSlice
 }
