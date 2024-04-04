@@ -36,44 +36,51 @@ func DeleteOneByIndex[typeSlice ~[]s, s any](varSlice typeSlice, index int) type
 
 }
 
-func DeleteOneByValue[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToDelete c) typeSlice {
-	indexToDelete := FindIndex(varSlice, valueToDelete)
+func DeleteOneByValue[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToFind c) typeSlice {
+	indexToDelete := FindIndex(varSlice, valueToFind)
 	return DeleteOneByIndex(varSlice, indexToDelete)
 }
 
-// func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete any) typeSlice {
+// func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToFind any) typeSlice {
 // 	for i, value := range varSlice {
-// 		if reflect.ValueOf(value).FieldByName(field).String() == valueToDelete {
+// 		if reflect.ValueOf(value).FieldByName(field).String() == valueToFind {
 // 			varSlice = DeleteOneByIndex(varSlice, i)
 // 		}
 // 	}
 // 	return varSlice
 // }
 
-func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete any) typeSlice {
-	tipoDeDato := reflect.TypeOf(valueToDelete).String()
+func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToFind any) int {
+	tipoDeDato := reflect.TypeOf(valueToFind).String()
+	var indexFound int
 	switch tipoDeDato {
 	case "int":
 		fmt.Println("tipo de dato INT")
 		for i, value := range varSlice {
 			// Convierte un reflect value en int64 y despues en int
-			if valueToDelete == int(reflect.ValueOf(value).FieldByName(field).Int()) {
-				varSlice = DeleteOneByIndex(varSlice, i)
+			if valueToFind == int(reflect.ValueOf(value).FieldByName(field).Int()) {
+				indexFound = i
+			} else {
+				indexFound = -1
 			}
 		}
 	case "string":
 		fmt.Println("ES STRING")
 		for i, value := range varSlice {
 			// Refleja el valor del campo solicitado de la variable y lo transforma a string
-			if valueToDelete == reflect.ValueOf(value).FieldByName(field).String() {
-				varSlice = DeleteOneByIndex(varSlice, i)
+			if valueToFind == reflect.ValueOf(value).FieldByName(field).String() {
+				indexFound = i
+			} else {
+				indexFound = -1
 			}
 		}
 	case "bool":
 		fmt.Println("es boolean")
 		for i, value := range varSlice {
-			if valueToDelete == reflect.ValueOf(value).FieldByName(field).Bool() {
-				varSlice = DeleteOneByIndex(varSlice, i)
+			if valueToFind == reflect.ValueOf(value).FieldByName(field).Bool() {
+				indexFound = i
+			} else {
+				indexFound = -1
 			}
 
 		}
@@ -82,42 +89,45 @@ func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, v
 		for i, value := range varSlice {
 			valueToCompare := reflect.ValueOf(value).FieldByName(field).Float()
 			fmt.Printf("%T %v\n", valueToCompare, valueToCompare)
-			if valueToCompare == valueToDelete {
-				varSlice = DeleteOneByIndex(varSlice, i)
+			if valueToCompare == valueToFind {
+				indexFound = i
+			} else {
+				indexFound = -1
 			}
 		}
 	default:
 		fmt.Println("no es un tipo soportado")
 	}
-	return varSlice
+	return indexFound
 }
 
-func ShowField[typeSlice ~[]e, e any](varSlice typeSlice, field string) {
-	for i, value := range varSlice {
-		fmt.Println(i, reflect.ValueOf(value).FieldByName(field))
-	}
+func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete string) {
+	i := FindIndexByField(varSlice, field, valueToDelete)
+	fmt.Println(i)
 }
 
 // type comparable sirve para comparar cualquier tipo (int, string, etc)
 // pero no para operar
 // type any sirve para operar con cualquier tipo (int, string, etc)
 // pero no para comparar
-func FindIndex[typeSlice ~[]c, c comparable](varSlice typeSlice, value c) int {
-	for i := 0; i < len(varSlice); i++ {
-		if varSlice[i] == value {
+
+func FindIndex[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToFind c) int {
+	for i, value := range varSlice {
+		if value == valueToFind {
 			return i
 		}
 	}
-	fmt.Println("No se encontro coincidencia")
+	fmt.Println("Coincidence not found")
 	return -1
 }
 
-// func FindIndex2[typeSlice ~[]E, E comparable](varSlice typeSlice, value E) int {
-// 	for i, valor := range varSlice {
-// 		if valor == value {
+// func FindIndex2[typeSlice ~[]c, c comparable](varSlice typeSlice, value c) int {
+// 	for i := 0; i < len(varSlice); i++ {
+// 		if varSlice[i] == value {
 // 			return i
 // 		}
 // 	}
+// 	fmt.Println("No se encontro coincidencia")
 // 	return -1
 // }
 

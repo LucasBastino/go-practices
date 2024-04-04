@@ -31,12 +31,17 @@ func main() {
 	chacarita := Equipo{"Chacarita Jrs", 1906, 20, []Jugador{oroz, vivaldo}}
 	fmt.Println(chacarita)
 	// sliceMethods.ShowField(chacarita.jugadores, "nombre")
-	chacarita.eliminarJugador(true)
+	chacarita.comprarJugador("vivaldo", chacarita, 2)
 	fmt.Println(chacarita)
 
 }
 
-func (e *Equipo) eliminarJugador(value any) {
-	e.jugadores = sliceMethods.DeleteOneByField(e.jugadores, "lesionado", value)
-	// fmt.Println(e.jugadores)
+// func (e *Equipo) eliminarJugador(field string, value any) {
+// 	e.jugadores = sliceMethods.DeleteOneByField(e.jugadores, field, value)
+// 	// fmt.Println(e.jugadores)
+// }
+
+func (e *Equipo) comprarJugador(jugador string, equipo Equipo, valor float64) {
+	sliceMethods.DeleteOneByField(equipo.jugadores, "nombre", jugador)
+
 }
