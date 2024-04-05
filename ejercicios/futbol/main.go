@@ -25,15 +25,17 @@ type Jugador struct {
 
 func main() {
 	fmt.Println("Futbol")
-	oroz := Jugador{"Oroz", 25, "MCO", 85, 5000, 2, false}
+	oroz := Jugador{"Oroz", 25, "MED", 85, 5000, 2, false}
 	vivaldo := Jugador{"Vivaldo", 39, "ARQ", 82, 3000, 1.5, true}
-	// fmt.Println(oroz)
+	malcorra := Jugador{"Malcorra", 32, "MED", 86, 6000, 3, false}
+	campaz := Jugador{"Campaz", 24, "DEL", 85, 5500, 2.5, false}
 	chacarita := Equipo{"Chacarita Jrs", 1906, 20, []Jugador{oroz, vivaldo}}
-	fmt.Println(chacarita)
-	// sliceMethods.ShowField(chacarita.jugadores, "nombre")
-	chacarita.comprarJugador("vivaldo", chacarita, 2)
-	fmt.Println(chacarita)
-
+	central := Equipo{"Rosario Central", 1889, 30, []Jugador{campaz, malcorra}}
+	// fmt.Println(chacarita)
+	// fmt.Println(central)
+	chacarita.comprarJugador("Campaz", &central, 2)
+	chacarita.imprimirInfo()
+	central.imprimirInfo()
 }
 
 // func (e *Equipo) eliminarJugador(field string, value any) {
@@ -41,7 +43,19 @@ func main() {
 // 	// fmt.Println(e.jugadores)
 // }
 
-func (e *Equipo) comprarJugador(jugador string, equipo Equipo, valor float64) {
-	sliceMethods.DeleteOneByField(equipo.jugadores, "nombre", jugador)
+func (e *Equipo) comprarJugador(jugador string, equipoVendedor *Equipo, valor float64) {
+	i := sliceMethods.FindIndexByField(equipoVendedor.jugadores, "nombre", jugador)
+	e.jugadores = append(e.jugadores, equipoVendedor.jugadores[i])
+	e.presupuestoEnM -= valor
+	equipoVendedor.jugadores = sliceMethods.DeleteOneByIndex(equipoVendedor.jugadores, i)
+	equipoVendedor.presupuestoEnM += valor
 
+}
+
+func (e Equipo) imprimirInfo() {
+	fmt.Println(e.nombre)
+	fmt.Println("Presupuesto:", e.presupuestoEnM)
+	for _, jugador := range e.jugadores {
+		fmt.Println(jugador.nombre)
+	}
 }

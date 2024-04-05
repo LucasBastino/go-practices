@@ -60,6 +60,7 @@ func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, v
 			// Convierte un reflect value en int64 y despues en int
 			if valueToFind == int(reflect.ValueOf(value).FieldByName(field).Int()) {
 				indexFound = i
+				break
 			} else {
 				indexFound = -1
 			}
@@ -70,6 +71,7 @@ func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, v
 			// Refleja el valor del campo solicitado de la variable y lo transforma a string
 			if valueToFind == reflect.ValueOf(value).FieldByName(field).String() {
 				indexFound = i
+				break
 			} else {
 				indexFound = -1
 			}
@@ -79,6 +81,7 @@ func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, v
 		for i, value := range varSlice {
 			if valueToFind == reflect.ValueOf(value).FieldByName(field).Bool() {
 				indexFound = i
+				break
 			} else {
 				indexFound = -1
 			}
@@ -91,6 +94,7 @@ func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, v
 			fmt.Printf("%T %v\n", valueToCompare, valueToCompare)
 			if valueToCompare == valueToFind {
 				indexFound = i
+				break
 			} else {
 				indexFound = -1
 			}
@@ -101,9 +105,12 @@ func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, v
 	return indexFound
 }
 
-func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete string) {
+func DeleteOneByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToDelete string) typeSlice {
 	i := FindIndexByField(varSlice, field, valueToDelete)
+	varSlice = DeleteOneByIndex(varSlice, i)
 	fmt.Println(i)
+	return varSlice
+
 }
 
 // type comparable sirve para comparar cualquier tipo (int, string, etc)
