@@ -1,0 +1,1 @@
+2024/04/09 19:27:45 Ha ocurrido un error: open archivoFicticio.txt: no such file or directory

@@ -85,5 +85,5 @@ func (e Team) teamMedia() float64 {
 func (l League) playMatch(homeTeam Team, awayTeam Team) {
 	homeGoals := math.Round(rand.Float64() * (homeTeam.teamMedia()) * 1.40 / 35)
 	awayGoals := math.Round(rand.Float64() * (awayTeam.teamMedia()) * 1.40 / 35)
-	fmt.Printf("%s %v-%v %s", homeTeam.name, homeGoals, awayGoals, awayTeam.name)
+	fmt.Printf("%s %v-%v %s\n", homeTeam.name, homeGoals, awayGoals, awayTeam.name)
 }
