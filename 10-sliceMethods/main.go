@@ -11,10 +11,6 @@ func main() {
 	slice1 := []string{"a", "b", "c", "d"}
 	slice2 := []int{1, 2, 3, 4, 5}
 	f.Println("slice1 antes de las funciones:", slice1)
-	f.Println("PrintSlice:")
-	sliceMethods.PrintSlice(slice1)
-	f.Println("PrintSliceLine:")
-	sliceMethods.PrintSliceLine(slice1)
 	// sliceMethods.PrintSliceLineV2(slice1...)
 	f.Println("FindIndex:")
 	f.Println(sliceMethods.FindIndex(slice1, "a"))
