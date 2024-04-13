@@ -15,3 +15,4 @@ func main() {
 }
 
 // log.Fatalln(error) -> hace kill de todos los procesos, llama a os.Exit(), no ejecuta las defer
+// no devuelve el error, solo lo imprime

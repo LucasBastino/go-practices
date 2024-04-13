@@ -15,3 +15,5 @@ func main() {
 		log.Println("Ha ocurrido un error:", err)
 	}
 }
+
+// fmt.Println no devuelve el error, solo lo imprime

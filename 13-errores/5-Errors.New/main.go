@@ -26,3 +26,5 @@ func sqrt(num int) (int, error) {
 		return 40, nil
 	}
 }
+
+// errors.New() devuelve el error

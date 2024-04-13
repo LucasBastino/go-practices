@@ -27,7 +27,4 @@ func main() {
 	fmt.Println("Revisa el archivo log-error.txt")
 }
 
-// fmt.Printnln(error) -> muestra el error
-// log.Println(error) -> muestra el error con la hora y fecha
-// log.Panicln(error) -> funciones defer corren y se puede hacer recover
-// panic(error)
+// log.Println no devuelve el error, solo lo imprime con la fecha y hora

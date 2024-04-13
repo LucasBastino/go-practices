@@ -35,3 +35,5 @@ func sqrt(num int) (int, error) {
 		return 40, nil
 	}
 }
+
+// fmt.Errorf() devuelve un tipo error
