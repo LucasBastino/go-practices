@@ -5,25 +5,8 @@ import (
 	"fmt"
 )
 
-func main() {
-	InsFundsError := PaymentError{msg: "Insufficient funds"}
-	InvCreditCardError := PaymentError{msg: "Invalid credit card"}
-	user := "customer"
-	err := InsFundsError
-
-	if user == "admin" {
-		if errors.Is(err, InsFundsError) {
-			fmt.Println("The user doesn't have money")
-		}
-		if errors.Is(err, InvCreditCardError) {
-			fmt.Println("The user has a invalid card")
-		}
-	}
-
-	if user == "customer" {
-		fmt.Println()
-	}
-}
+var InsFundsError = PaymentError{msg: "Insufficient funds"}
+var InvCreditCardError = PaymentError{msg: "Invalid credit card"}
 
 type PaymentError struct {
 	msg string
@@ -31,4 +14,27 @@ type PaymentError struct {
 
 func (pe PaymentError) Error() string {
 	return fmt.Sprintf("An error has occurred: %v", pe.msg)
+}
+
+func main() {
+
+	user, err := dropError()
+	if err != nil {
+		if user == "admin" {
+			if errors.Is(err, InsFundsError) {
+				fmt.Println("The user doesn't have money")
+			}
+			if errors.Is(err, InvCreditCardError) {
+				fmt.Println("The user has a invalid card")
+			}
+		}
+
+		if user == "customer" {
+			fmt.Println(err.Error())
+		}
+	}
+}
+
+func dropError() (string, error) {
+	return "admin", InsFundsError
 }
