@@ -15,7 +15,7 @@ func main() {
 	f.Println("FindIndex:")
 	f.Println(sliceMethods.FindIndex(slice1, "a"))
 	f.Println("FindIndex and DeleteOneByIndex:")
-	slice1 = sliceMethods.DeleteOneByIndex(slice1, sliceMethods.FindIndex(slice1, "a"))
+	// slice1 = sliceMethods.DeleteOneByIndex(slice1, sliceMethods.FindIndex(slice1, "a"))
 	f.Println(slice1)
 	f.Println("Push: a")
 	slice1 = sliceMethods.Push(slice1, "a")

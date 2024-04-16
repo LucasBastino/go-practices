@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"math/rand"
@@ -41,7 +42,7 @@ func main() {
 	league := League{[]Team{chacarita, central}}
 	fmt.Println(chacarita)
 	fmt.Println(central)
-	chacarita.buyPlayer("Malcorra", &central, 2)
+	chacarita.buyPlayer("Malcor2ra", &central, 2)
 	// chacarita.buyPlayer("Campaz", &central, 2)
 	// central.buyPlayer("Oroz", &chacarita, 1.5)
 	chacarita.showInfo()
@@ -56,19 +57,28 @@ func main() {
 // 	// fmt.Println(e.players)
 // }
 
-func (e *Team) buyPlayer(Player string, sellerTeam *Team, valor float64) {
-	i := sliceMethods.FindIndexByField(sellerTeam.players, "name", Player)
-	e.players = append(e.players, sellerTeam.players[i])
-	e.budget -= valor
-	sellerTeam.players = sliceMethods.DeleteOneByIndex(sellerTeam.players, i)
-	sellerTeam.budget += valor
+func (e *Team) buyPlayer(player string, sellerTeam *Team, valor float64) {
+	i, err := sliceMethods.FindIndexByField(sellerTeam.players, "name", player)
+	if err != nil {
+		if errors.Is(err, sliceMethods.IsNotIn) {
+			panic(fmt.Errorf("El jugador %v no se encuentra en el plantel de %v\n", player, sellerTeam.name))
+
+		} else {
+			panic(err)
+		}
+	} else {
+		e.players = append(e.players, sellerTeam.players[i])
+		e.budget -= valor
+		sellerTeam.players = sliceMethods.DeleteOneByIndex(sellerTeam.players, i)
+		sellerTeam.budget += valor
+	}
 }
 
 func (e Team) showInfo() {
 	fmt.Println(e.name)
 	fmt.Println("Budget:", e.budget)
-	for _, Player := range e.players {
-		fmt.Println(Player.name)
+	for _, player := range e.players {
+		fmt.Println(player.name)
 	}
 }
 
