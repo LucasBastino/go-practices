@@ -46,7 +46,7 @@ func FindIndex[typeSlice ~[]c, c comparable](varSlice typeSlice, valueToFind c) 
 		}
 	}
 
-	return -1, errors.New("Coincidence not found")
+	return -1, errors.New("coincidence not found")
 }
 
 func FindIndexByField[typeSlice ~[]e, e any](varSlice typeSlice, field string, valueToFind any) (int, error) {
@@ -132,7 +132,7 @@ type SliceError struct {
 }
 
 func (se SliceError) Error() string {
-	return fmt.Sprintf("An error has ocurred: %v\n", se.msg)
+	return fmt.Sprintf("An error has ocurred in SliceMethods: %v\n", se.msg)
 }
 
 var IsNotIn = SliceError{msg: "The element is not in the slice."}

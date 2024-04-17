@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"math"
 	"math/rand"
 
@@ -61,7 +62,8 @@ func (e *Team) buyPlayer(player string, sellerTeam *Team, valor float64) {
 	i, err := sliceMethods.FindIndexByField(sellerTeam.players, "name", player)
 	if err != nil {
 		if errors.Is(err, sliceMethods.IsNotIn) {
-			panic(fmt.Errorf("El jugador %v no se encuentra en el plantel de %v\n", player, sellerTeam.name))
+			log.Println(err)
+			panic(fmt.Errorf("el jugador %v no se encuentra en el plantel de %v", player, sellerTeam.name))
 
 		} else {
 			panic(err)
