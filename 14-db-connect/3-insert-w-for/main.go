@@ -9,32 +9,31 @@ import (
 
 type Team struct {
 	name   string
-	zone   string
 	points int
 }
 
 type Player struct {
-	name     string
-	age      int
-	position string
+	name   string
+	age    int
+	idTeam int
 }
 
 func main() {
 	db := dbInit()
 	defer db.Close()
 
-	oroz := Player{"Oroz", 25, "MED"}
-	vivaldo := Player{"Vivaldo", 39, "ARQ"}
-	malcorra := Player{"Malcorra", 32, "MED"}
-	campaz := Player{"Campaz", 24, "DEL"}
-	chacarita := Team{"Chacarita Jrs", "A", 49}
-	rosario := Team{"Rosario Central", "A", 42}
-	defensores := Team{"Defensores de Belgrano", "B", 44}
-	sanTelmo := Team{"San Telmo", "B", 40}
+	oroz := Player{"Oroz", 25, 1}
+	vivaldo := Player{"Vivaldo", 39, 1}
+	malcorra := Player{"Malcorra", 32, 2}
+	campaz := Player{"Campaz", 24, 2}
+	chacarita := Team{"Chacarita Jrs", 49}
+	rosario := Team{"Rosario Central", 42}
+	defensores := Team{"Defensores de Belgrano", 44}
+	sanTelmo := Team{"San Telmo", 40}
 	teams := []Team{chacarita, rosario, defensores, sanTelmo}
 	fmt.Println(teams)
 	players := []Player{oroz, vivaldo, malcorra, campaz}
-	// insertTeams(db, teams)
+	insertTeams(db, teams)
 	insertPlayers(db, players)
 }
 
@@ -61,29 +60,29 @@ func dbInit() *sql.DB {
 	return db
 }
 
-// func insertTeams(db *sql.DB, teams []Team) {
-// 	queryString := "INSERT INTO Teams (nombre, zona, puntos) VALUES "
-// 	for _, e := range teams {
-// 		// se le agregan los values
-// 		queryString += fmt.Sprintf("('%s', '%s', '%v'),", e.name, e.zone, e.points)
-// 	}
+func insertTeams(db *sql.DB, teams []Team) {
+	queryString := "INSERT INTO team (name, points) VALUES "
+	for _, e := range teams {
+		// se le agregan los values
+		queryString += fmt.Sprintf("('%s', '%v'),", e.name, e.points)
+	}
 
-// 	//  elimino la ',' al final del string
-// 	queryString = queryString[:len(queryString)-1]
+	//  elimino la ',' al final del string
+	queryString = queryString[:len(queryString)-1]
 
-// 	insert, err := db.Query(queryString)
-// 	if err != nil {
-// 		fmt.Println("error inserting data")
-// 		panic(err.Error())
-// 	}
-// 	defer insert.Close()
+	insert, err := db.Query(queryString)
+	if err != nil {
+		fmt.Println("error inserting data")
+		panic(err.Error())
+	}
+	defer insert.Close()
 
-// }
+}
 
 func insertPlayers(db *sql.DB, players []Player) {
-	insertPlayersQueryString := "INSERT INTO jugadores (nombre, edad, posicion) VALUES "
+	insertPlayersQueryString := "INSERT INTO player (name, age, idTeam) VALUES "
 	for _, player := range players {
-		insertPlayersQueryString += fmt.Sprintf("('%s', '%v', '%s'),", player.name, player.age, player.position)
+		insertPlayersQueryString += fmt.Sprintf("('%s', '%v', '%v'),", player.name, player.age, player.idTeam)
 	}
 	insertPlayersQueryString = insertPlayersQueryString[:len(insertPlayersQueryString)-1]
 	insert, err := db.Query(insertPlayersQueryString)

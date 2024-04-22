@@ -30,13 +30,12 @@ func dbConnection() *sql.DB {
 
 type Team struct {
 	name   string
-	zone   string
 	points int
 }
 
 func selectQr(db *sql.DB) {
 	// result, err := db.Query("SELECT nombre, puntos FROM equipos WHERE zona = 'a'")
-	result, err := db.Query("SELECT nombre, puntos FROM equipos")
+	result, err := db.Query("SELECT name, points FROM team")
 	if err != nil {
 		fmt.Println("error showing data")
 		panic(err.Error())

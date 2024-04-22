@@ -10,7 +10,7 @@ import (
 func main() {
 	db := dbConnection()
 	defer db.Close()
-	buyPlayer(db)
+	buyPlayer(db, "Malcorra", 2, 1)
 }
 
 func dbConnection() *sql.DB {
@@ -29,24 +29,35 @@ func dbConnection() *sql.DB {
 	return db
 }
 
-func buyPlayer(db *sql.DB) {
-	equipoParaBorrar := "equipo1"
-	delete, err := db.Query(fmt.Sprintf("DELETE FROM equipos WHERE nombre = '%v'", equipoParaBorrar))
+func buyPlayer(db *sql.DB, playerName string, idSellerTeam int, idBuyerTeam int) {
+	findPlayer(db, playerName, idSellerTeam)
+	// insertPlayer(db, playerName, id)
+	// deletePlayer(db, playerName, idSellerTeam)
+}
+
+func findPlayer(db *sql.DB, playerName string, idSellerTeam int) {
+	queryString := fmt.Sprintf("SELECT player.name, player.age, team.name FROM player INNER JOIN team ON player.idTeam = team.idTeam WHERE player.name = '%s'", playerName)
+	// queryString := "SELECT * FROM player"
+	findSelect, err := db.Query(queryString)
 	if err != nil {
-		fmt.Println("error in first query")
+		fmt.Println("error in select query")
 		panic(err.Error())
 	}
-	defer delete.Close()
-	insert2, err := db.Query("INSERT INTO equipos (nombre, zona, puntos) VALUES ('equipo3', 'd', '4')")
-	if err != nil {
-		fmt.Println("error in second insert")
-		panic(err.Error())
+	for findSelect.Next() {
+		var show ShowPlayer
+		err := findSelect.Scan(&show.name, &show.age, &show.teamName)
+		if err != nil {
+			fmt.Println("error scanning data")
+			panic(err.Error())
+		}
+		fmt.Println(show)
 	}
-	defer insert2.Close()
-	insert3, err := db.Query("INSERT INTO equipos (nombre, zona, puntos) VALUES ('equipo4', 'd', '4')")
-	if err != nil {
-		fmt.Println("error in second insert")
-		panic(err.Error())
-	}
-	defer insert3.Close()
+	defer findSelect.Close()
+}
+
+type ShowPlayer struct {
+	idPlayer int
+	name     string
+	age      int
+	teamName string
 }
