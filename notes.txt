@@ -1,0 +1,45 @@
+metodos:
+
+mercado de pases:
+comprar jugador
+comprar jugador libre
+comprar jugador exterior
+rescindir contrato
+
+mejoras:
+estadio
+entrenamiento
+inferiores?
+
+simulacion:
+atajar
+defender
+rechazar
+pasar
+amagar
+patear
+
+
+habilidades:
+atajar
+defender
+pasar
+patear
+fuerza
+velocidad
+inteligencia
+precision
+
+liga:
+jugarPartido
+tabladeposiciones
+goleadores
+asistidores
+lesionados
+
+version turbia?
+comprar arbitros
+hacer quilombo
+
+
+
