@@ -29,12 +29,11 @@ func main() {
 	}
 	fmt.Println("Successfully connection to DB!")
 
-	tabla := "equipos"
-	equipo := "Chacarita"
-	zona := "A"
-	puntos := 45
+	tabla := "team"
+	equipo := "equipo1"
+	puntos := 41
 	// insert, err := db.Query("INSERT INTO equipos (nombre, zona, puntos) VALUES ('Chacarita', 'B', 47), ('Almirante', 'A', 41 );")
-	insert, err := db.Query(fmt.Sprintf("INSERT INTO %s (nombre, zona, puntos) VALUES ('%s', '%s', '%v')", tabla, equipo, zona, puntos))
+	insert, err := db.Query(fmt.Sprintf("INSERT INTO %s (name, points) VALUES ('%s', '%v');", tabla, equipo, puntos))
 	if err != nil {
 		fmt.Println("error inserting data in DB")
 		panic(err.Error())
