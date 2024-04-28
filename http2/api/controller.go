@@ -2,11 +2,13 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
 
 	"github.com/LucasBastino/practicas-go/http2/models"
+	"github.com/gorilla/schema"
 )
 
 // controllers
@@ -18,14 +20,8 @@ func (c *Controller) renderHome(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(str)
 }
 
-func (c *Controller) sendUsers(w http.ResponseWriter, r *http.Request) {
-	path := c.getPath()
-	file, _ := os.Open(path)
-
-	var users []models.User
-	// para guardar los datos en la variable se requiere de un puntero
-	json.NewDecoder(file).Decode(&users)
-
+func (c *Controller) getUsers(w http.ResponseWriter, r *http.Request) {
+	users := c.decodeUsers()
 	limitParam := r.URL.Query().Get("limit")
 	limit, _ := strconv.Atoi(limitParam)
 
@@ -39,6 +35,43 @@ func (c *Controller) sendUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
+	// idParam := r.URL.Query().Get("id")
+
+	// params := mux.Vars(r)
+	// idParam := params["id"]
+	// id, err := strconv.Atoi(idParam)
+
+	// if err != nil {
+	// 	fmt.Println("error converting idParam to id")
+	// 	w.WriteHeader(http.StatusBadRequest)
+	// }
+
+	userParams := models.UserParams{}
+	schema.NewDecoder().Decode(userParams, r.URL.Query())
+	users := c.decodeUsers()
+	user := users[userParams.Id]
+	fmt.Println(user)
+	json.NewEncoder(w).Encode(user)
+}
+
 func (c *Controller) getPath() string {
 	return "./data.json"
+}
+
+func (c *Controller) decodeUsers() []models.User {
+	path := c.getPath()
+	file, err := os.Open(path)
+	if err != nil {
+		fmt.Println("error opening file")
+		panic(err.Error())
+	}
+	var users []models.User
+	// para guardar los datos en la variable se requiere de un puntero
+	err = json.NewDecoder(file).Decode(&users)
+	if err != nil {
+		fmt.Println("error decoding users")
+		panic(err.Error())
+	}
+	return users
 }

@@ -10,5 +10,6 @@ import (
 
 func (c *Controller) RegisterRoutes(r *mux.Router) {
 	r.HandleFunc("/", c.renderHome).Methods(http.MethodGet)
-	r.HandleFunc("/users", c.sendUsers).Methods(http.MethodGet)
+	r.HandleFunc("/users", c.getUsers).Methods(http.MethodGet)
+	r.HandleFunc("/users/{id}", c.getUser).Methods(http.MethodGet)
 }

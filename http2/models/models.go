@@ -6,3 +6,9 @@ type User struct {
 	Title     string
 	Completed bool
 }
+
+type UserParams struct {
+	Id     int
+	Offset int
+	Limit  int
+}
