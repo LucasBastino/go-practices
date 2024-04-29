@@ -8,7 +8,6 @@ type User struct {
 }
 
 type UserParams struct {
-	Id     int
-	Offset int
-	Limit  int
+	From int `schema:"from"`
+	To   int `schema:"To"`
 }

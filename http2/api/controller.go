@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/LucasBastino/practicas-go/http2/models"
+	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 )
 
@@ -21,37 +22,52 @@ func (c *Controller) renderHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) getUsers(w http.ResponseWriter, r *http.Request) {
+	// limitParam := r.URL.Query().Get("limit")
+	// limit, _ := strconv.Atoi(limitParam)
+	userParams := models.UserParams{}
+	decoder := schema.NewDecoder()
+	// el primer parametro del Decode hecho por un schema, debe ser un puntero a un struct
+	err := decoder.Decode(&userParams, r.URL.Query())
+	if err != nil {
+		fmt.Println("error decoding URL")
+		panic(err.Error())
+	}
 	users := c.decodeUsers()
-	limitParam := r.URL.Query().Get("limit")
-	limit, _ := strconv.Atoi(limitParam)
-
-	if limit < 0 || limit > 200 {
-		w.WriteHeader(http.StatusBadRequest)
-	} else if limit == 0 {
+	fmt.Println(userParams)
+	from := userParams.From
+	to := userParams.To
+	if from == 0 && to == 0 {
 		json.NewEncoder(w).Encode(users)
+	} else if from < 1 || from > len(users) || to < 1 || to > len(users) || from > to {
+		w.WriteHeader(http.StatusBadRequest)
 	} else {
 		// para mandar los datos de la variable no hace falta el puntero
-		json.NewEncoder(w).Encode(users[:limit])
+		// desde(inclusive) hasta(inclusive)
+		json.NewEncoder(w).Encode(users[from-1 : to])
 	}
+
+}
+
+func (c *Controller) postBook(w http.ResponseWriter, r *http.Request) {
+	user := models.User{}
+	json.NewDecoder(r.Body).Decode(&user)
+	fmt.Println(user)
+
 }
 
 func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
-	// idParam := r.URL.Query().Get("id")
+	params := mux.Vars(r)
+	idParam := params["id"]
+	id, err := strconv.Atoi(idParam)
 
-	// params := mux.Vars(r)
-	// idParam := params["id"]
-	// id, err := strconv.Atoi(idParam)
+	if err != nil {
+		fmt.Println("error converting idParam to id")
+		w.WriteHeader(http.StatusBadRequest)
+	}
 
-	// if err != nil {
-	// 	fmt.Println("error converting idParam to id")
-	// 	w.WriteHeader(http.StatusBadRequest)
-	// }
-
-	userParams := models.UserParams{}
-	schema.NewDecoder().Decode(userParams, r.URL.Query())
 	users := c.decodeUsers()
-	user := users[userParams.Id]
-	fmt.Println(user)
+	user :=
+	user := users[id-1]
 	json.NewEncoder(w).Encode(user)
 }
 
