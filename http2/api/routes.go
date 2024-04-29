@@ -11,7 +11,7 @@ import (
 func (c *Controller) RegisterRoutes(r *mux.Router) {
 	r.HandleFunc("/", c.renderHome).Methods(http.MethodGet)
 	r.HandleFunc("/users", c.getUsers).Methods(http.MethodGet)
-	r.HandleFunc("/users/", c.getUsersPrueba).Methods(http.MethodGet)
-	r.HandleFunc("/users/{id}", c.getUserPrueba).Methods(http.MethodGet)
-	r.HandleFunc("/createUser", c.createUser).Methods(http.MethodPost)
+	r.HandleFunc("/users/", c.getUsers).Methods(http.MethodGet)
+	r.HandleFunc("/users/{id}", c.getUser).Methods(http.MethodGet)
+	r.HandleFunc("/users/create", c.createUser).Methods(http.MethodPost)
 }

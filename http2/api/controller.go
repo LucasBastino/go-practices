@@ -75,12 +75,26 @@ func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {
-	users := c.decodeUsers()
 	user := models.User{}
 	json.NewDecoder(r.Body).Decode(&user)
 	fmt.Printf("%+v\n", user)
+	c.saveUser(user)
+
+}
+
+func (c *Controller) saveUser(user models.User) {
+	users := c.decodeUsers()
 	users = append(users, user)
-	c.setUsersPrueba(user)
+	usersJson, err := json.Marshal(users)
+	if err != nil {
+		fmt.Println("err marshaling users")
+		panic(err.Error())
+	}
+
+	err = os.WriteFile(c.getPath(), usersJson, 0644)
+	if err != nil {
+		fmt.Println("error writing file", c.getPath())
+	}
 
 }
 
@@ -95,6 +109,8 @@ func (c *Controller) decodeUsers() []models.User {
 		fmt.Println("error opening file")
 		panic(err.Error())
 	}
+	defer file.Close()
+
 	var users []models.User
 	// para guardar los datos en la variable se requiere de un puntero
 	err = json.NewDecoder(file).Decode(&users)
@@ -103,33 +119,4 @@ func (c *Controller) decodeUsers() []models.User {
 		panic(err.Error())
 	}
 	return users
-}
-
-var users2 []models.User
-
-func (c *Controller) setUsersPrueba(user models.User) {
-	users2 = c.decodeUsers()
-	users2 = append(users2, user)
-}
-
-func (c *Controller) getUsersPrueba(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(users2)
-}
-func (c *Controller) getUserPrueba(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	idParam := params["id"]
-	id, _ := strconv.Atoi(idParam)
-
-	// users := c.decodeUsers()
-	var user models.User
-
-	// y si no estan ordenados consecutivamentes por id
-	for index, u := range users2 {
-		if u.Id == id {
-			user = users2[index]
-			json.NewEncoder(w).Encode(user)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-		}
-	}
 }
