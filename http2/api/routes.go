@@ -14,4 +14,5 @@ func (c *Controller) RegisterRoutes(r *mux.Router) {
 	r.HandleFunc("/users/", c.getUsers).Methods(http.MethodGet)
 	r.HandleFunc("/users/{id}", c.getUser).Methods(http.MethodGet)
 	r.HandleFunc("/users/create", c.createUser).Methods(http.MethodPost)
+	r.HandleFunc("/users/delete/{id}", c.deleteUser).Methods(http.MethodDelete)
 }

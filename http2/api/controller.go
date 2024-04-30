@@ -116,8 +116,10 @@ func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {
 	user := models.User{}
 	json.NewDecoder(r.Body).Decode(&user)
 	fmt.Printf("%+v\n", user)
-	c.saveUser(user)
-
+	users := c.decodeUsers()
+	users = append(users, user)
+	c.saveUsers(users)
+	w.WriteHeader(http.StatusCreated)
 }
 
 func (c *Controller) deleteUser(w http.ResponseWriter, r *http.Request) {
@@ -133,27 +135,19 @@ func (c *Controller) deleteUser(w http.ResponseWriter, r *http.Request) {
 	for index, user := range users {
 		if user.Id == id {
 			users = append(users[:index], users[index+1:]...)
-
-			return
+			break
 		}
 	}
-
+	c.saveUsers(users)
 }
 
-func (c *Controller) saveUser(user models.User) {
-	users := c.decodeUsers()
-	users = append(users, user)
+func (c *Controller) saveUsers(users []models.User) {
 	usersJson, err := json.Marshal(users)
 	if err != nil {
-		fmt.Println("err marshaling users")
+		fmt.Println("error marshaling users")
 		panic(err.Error())
 	}
-
-	err = os.WriteFile(c.getPath(), usersJson, 0644)
-	if err != nil {
-		fmt.Println("error writing file", c.getPath())
-	}
-
+	os.WriteFile(c.getPath(), usersJson, 0644)
 }
 
 func (c *Controller) getPath() string {
