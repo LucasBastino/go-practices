@@ -38,14 +38,52 @@ func (c *Controller) getUsers(w http.ResponseWriter, r *http.Request) {
 	to := userParams.To
 	if from == 0 && to == 0 {
 		json.NewEncoder(w).Encode(users)
-	} else if from < 1 || from > len(users) || to < 1 || to > len(users) || from > to {
+	} else if from < 1 || to < 1 || from > to {
 		w.WriteHeader(http.StatusBadRequest)
 	} else {
-		// para mandar los datos de la variable no hace falta el puntero
-		// desde(inclusive) hasta(inclusive)
-		json.NewEncoder(w).Encode(users[from-1 : to])
+		validation, idFrom, idTo := c.validationUsersFromTo(users, from, to)
+		if validation {
+			// para mandar los datos de la variable no hace falta el puntero
+			// desde(inclusive) hasta(inclusive)
+			json.NewEncoder(w).Encode(users[idFrom : idTo+1])
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
 	}
 
+}
+
+func (c *Controller) validationUsersFromTo(users []models.User, from, to int) (bool, int, int) {
+	var idFrom int
+	var idTo int
+	var idFromFounded bool
+	var idToFounded bool
+	for index, user := range users {
+		if user.Id == from {
+			idFrom = index
+			idFromFounded = true
+			break
+		} else {
+			idFromFounded = false
+		}
+	}
+
+	for index, user := range users {
+		if user.Id == to {
+			idTo = index
+			idToFounded = true
+			break
+		} else {
+			idToFounded = false
+		}
+	}
+	fmt.Println(idFrom, idTo)
+	fmt.Println(idFromFounded, idToFounded)
+	if idFromFounded && idToFounded { // == true
+		return true, idFrom, idTo
+	} else {
+		return false, 0, 0
+	}
 }
 
 func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
