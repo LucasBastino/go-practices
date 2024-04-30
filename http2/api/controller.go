@@ -82,6 +82,26 @@ func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (c *Controller) deleteUser(w http.ResponseWriter, r *http.Request) {
+	userParams := mux.Vars(r)
+	idParam := userParams["id"]
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		fmt.Println("err converting idParam to int")
+		panic(err.Error())
+	}
+
+	users := c.decodeUsers()
+	for index, user := range users {
+		if user.Id == id {
+			users = append(users[:index], users[index+1:]...)
+
+			return
+		}
+	}
+
+}
+
 func (c *Controller) saveUser(user models.User) {
 	users := c.decodeUsers()
 	users = append(users, user)
