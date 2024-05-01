@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/LucasBastino/practicas-go/http2/models"
@@ -53,39 +52,6 @@ func (c *Controller) getUsers(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (c *Controller) validationUsersFromTo(users []models.User, from, to int) (bool, int, int) {
-	var idFrom int
-	var idTo int
-	var idFromFounded bool
-	var idToFounded bool
-	for index, user := range users {
-		if user.Id == from {
-			idFrom = index
-			idFromFounded = true
-			break
-		} else {
-			idFromFounded = false
-		}
-	}
-
-	for index, user := range users {
-		if user.Id == to {
-			idTo = index
-			idToFounded = true
-			break
-		} else {
-			idToFounded = false
-		}
-	}
-	fmt.Println(idFrom, idTo)
-	fmt.Println(idFromFounded, idToFounded)
-	if idFromFounded && idToFounded { // == true
-		return true, idFrom, idTo
-	} else {
-		return false, 0, 0
-	}
-}
-
 func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	idParam := params["id"]
@@ -122,39 +88,70 @@ func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
+// 	userParams := models.User{}
+// 	decoder := schema.NewDecoder()
+// 	decoder.Decode(&userParams, r.URL.Query())
+// 	fmt.Println("userParams from params schema:", userParams)
+// 	URLParams := mux.Vars(r)
+// 	idParam := URLParams["id"]
+// 	fmt.Println("idParam from URL mux.Vars:", idParam)
+// 	id, err := strconv.Atoi(idParam)
+// 	if err != nil {
+// 		fmt.Println("error converting idParam to int in editUser")
+// 		panic(err.Error())
+// 	}
+// 	users := c.decodeUsers()
+// 	validation := false
+// 	index, users, validation := func() (int, []models.User, bool) {
+// 		for index, user := range users {
+// 			if id == user.Id {
+// 				user = userParams
+// 				user.Id = id
+// 				fmt.Println(user)
+// 				usersTemp := append(users[:index], user)
+// 				users = append(usersTemp, users[index+1:]...)
+// 				return index, users, true
+// 			}
+// 		}
+// 		return 0, users, false
+// 	}()
+
+// 	if validation {
+// 		fmt.Println(users[index])
+// 		c.saveUsers(users)
+// 	} else {
+// 		w.WriteHeader(http.StatusNotModified)
+// 	}
+// }
+
 func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
-	userParams := models.User{}
-	decoder := schema.NewDecoder()
-	decoder.Decode(&userParams, r.URL.Query())
-	fmt.Println("userParams from params schema:", userParams)
-	URLParams := mux.Vars(r)
-	idParam := URLParams["id"]
-	fmt.Println("idParam from URL mux.Vars:", idParam)
-	id, err := strconv.Atoi(idParam)
+	var userToEdit models.User
+	users := c.decodeUsers()
+	err := json.NewDecoder(r.Body).Decode(&userToEdit)
 	if err != nil {
-		fmt.Println("error converting idParam to int in editUser")
+		fmt.Println("error decoding body in editUser")
 		panic(err.Error())
 	}
-	users := c.decodeUsers()
-	validation := false
-	var indexUser int
-	index, users, validation := func() (int, []models.User, bool) {
+	URLParams := mux.Vars(r)
+	id, err := strconv.Atoi(URLParams["id"])
+	if err != nil {
+		fmt.Println("error converting idParam to int")
+	}
 
-	}
-	for index, user := range users {
-		if id == user.Id {
-			user = userParams
-			user.Id = id
-			validation = true
-			indexUser = index
-			fmt.Println(user)
-			usersTemp := append(users[:index], user)
-			users = append(usersTemp, users[index+1:]...)
-			break
+	users, validation := func() ([]models.User, bool) {
+		for index, user := range users {
+			if user.Id == id {
+				usersTemp := append(users[:index], userToEdit)
+				users = append(usersTemp, users[index+1:]...)
+				return users, true
+			}
 		}
-	}
+
+		return users, false
+	}()
+
 	if validation {
-		fmt.Println(users[indexUser])
 		c.saveUsers(users)
 	} else {
 		w.WriteHeader(http.StatusNotModified)
@@ -179,36 +176,4 @@ func (c *Controller) deleteUser(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	c.saveUsers(users)
-}
-
-func (c *Controller) saveUsers(users []models.User) {
-	usersJson, err := json.Marshal(users)
-	if err != nil {
-		fmt.Println("error marshaling users")
-		panic(err.Error())
-	}
-	os.WriteFile(c.getPath(), usersJson, 0644)
-}
-
-func (c *Controller) getPath() string {
-	return "./data.json"
-}
-
-func (c *Controller) decodeUsers() []models.User {
-	path := c.getPath()
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Println("error opening file")
-		panic(err.Error())
-	}
-	defer file.Close()
-
-	var users []models.User
-	// para guardar los datos en la variable se requiere de un puntero
-	err = json.NewDecoder(file).Decode(&users)
-	if err != nil {
-		fmt.Println("error decoding users")
-		panic(err.Error())
-	}
-	return users
 }
