@@ -9,5 +9,5 @@ type User struct {
 
 type UserParams struct {
 	From int `schema:"from"`
-	To   int `schema:"To"`
+	To   int `schema:"to"`
 }

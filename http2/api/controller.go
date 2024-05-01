@@ -122,6 +122,46 @@ func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
+	userParams := models.User{}
+	decoder := schema.NewDecoder()
+	decoder.Decode(&userParams, r.URL.Query())
+	fmt.Println("userParams from params schema:", userParams)
+	URLParams := mux.Vars(r)
+	idParam := URLParams["id"]
+	fmt.Println("idParam from URL mux.Vars:", idParam)
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		fmt.Println("error converting idParam to int in editUser")
+		panic(err.Error())
+	}
+	users := c.decodeUsers()
+	validation := false
+	var indexUser int
+	index, users, validation := func() (int, []models.User, bool) {
+
+	}
+	for index, user := range users {
+		if id == user.Id {
+			user = userParams
+			user.Id = id
+			validation = true
+			indexUser = index
+			fmt.Println(user)
+			usersTemp := append(users[:index], user)
+			users = append(usersTemp, users[index+1:]...)
+			break
+		}
+	}
+	if validation {
+		fmt.Println(users[indexUser])
+		c.saveUsers(users)
+	} else {
+		w.WriteHeader(http.StatusNotModified)
+	}
+
+}
+
 func (c *Controller) deleteUser(w http.ResponseWriter, r *http.Request) {
 	userParams := mux.Vars(r)
 	idParam := userParams["id"]
