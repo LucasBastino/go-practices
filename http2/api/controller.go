@@ -88,52 +88,18 @@ func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-// func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
-// 	userParams := models.User{}
-// 	decoder := schema.NewDecoder()
-// 	decoder.Decode(&userParams, r.URL.Query())
-// 	fmt.Println("userParams from params schema:", userParams)
-// 	URLParams := mux.Vars(r)
-// 	idParam := URLParams["id"]
-// 	fmt.Println("idParam from URL mux.Vars:", idParam)
-// 	id, err := strconv.Atoi(idParam)
-// 	if err != nil {
-// 		fmt.Println("error converting idParam to int in editUser")
-// 		panic(err.Error())
-// 	}
-// 	users := c.decodeUsers()
-// 	validation := false
-// 	index, users, validation := func() (int, []models.User, bool) {
-// 		for index, user := range users {
-// 			if id == user.Id {
-// 				user = userParams
-// 				user.Id = id
-// 				fmt.Println(user)
-// 				usersTemp := append(users[:index], user)
-// 				users = append(usersTemp, users[index+1:]...)
-// 				return index, users, true
-// 			}
-// 		}
-// 		return 0, users, false
-// 	}()
-
-// 	if validation {
-// 		fmt.Println(users[index])
-// 		c.saveUsers(users)
-// 	} else {
-// 		w.WriteHeader(http.StatusNotModified)
-// 	}
-// }
-
 func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
 	var userToEdit models.User
 	users := c.decodeUsers()
+	// inserto las variables del json pasado por el body en la variable userToEdit
 	err := json.NewDecoder(r.Body).Decode(&userToEdit)
 	if err != nil {
 		fmt.Println("error decoding body in editUser")
 		panic(err.Error())
 	}
+	// recojo las variables escritas en la URL
 	URLParams := mux.Vars(r)
+	// en este caso solo me interesa el id
 	id, err := strconv.Atoi(URLParams["id"])
 	if err != nil {
 		fmt.Println("error converting idParam to int")
@@ -142,6 +108,7 @@ func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
 	users, validation := func() ([]models.User, bool) {
 		for index, user := range users {
 			if user.Id == id {
+				// si coincide el param id con el id del user borra el user anterior y mete el modificado
 				usersTemp := append(users[:index], userToEdit)
 				users = append(usersTemp, users[index+1:]...)
 				return users, true
