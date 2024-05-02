@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
+	"sync/atomic"
 	"testing"
 )
 
@@ -15,14 +16,22 @@ func suma(valores []int) int {
 	return totalSuma
 }
 
+func generarValores() []int {
+	valores := []int{}
+	for i := 0; i < 240000000; i++ {
+		valores = append(valores, i)
+	}
+	return valores
+}
+
 func BenchmarkSuma(b *testing.B) {
-	valores := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36}
+	valores := generarValores()
 	totalSuma := suma(valores)
 	fmt.Println(totalSuma)
 }
 
 func BenchmarkSumaSync(b *testing.B) {
-	valores := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36}
+	valores := generarValores()
 	cantidadSubprocesos := runtime.GOMAXPROCS(0)
 	wg := sync.WaitGroup{}
 	mt := sync.Mutex{}
@@ -39,6 +48,27 @@ func BenchmarkSumaSync(b *testing.B) {
 			mt.Lock()
 			totalSuma += parcialSuma
 			mt.Unlock()
+		}()
+	}
+	wg.Wait()
+	fmt.Println(totalSuma)
+}
+
+func BenchmarkSumaSyncAtomic(b *testing.B) {
+	valores := generarValores()
+	cantidadSubprocesos := runtime.GOMAXPROCS(0)
+	wg := sync.WaitGroup{}
+	wg.Add(cantidadSubprocesos)
+	var totalSuma int64
+	for i := 0; i < cantidadSubprocesos; i++ {
+		indice := i
+		go func() {
+			defer wg.Done()
+			inicio := indice * (len(valores) / cantidadSubprocesos)
+			fin := (indice + 1) * (len(valores) / cantidadSubprocesos)
+			parcialSuma := suma(valores[inicio:fin])
+
+			atomic.AddInt64(&totalSuma, int64(parcialSuma))
 		}()
 	}
 	wg.Wait()
