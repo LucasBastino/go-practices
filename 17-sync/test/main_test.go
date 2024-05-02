@@ -18,7 +18,7 @@ func suma(valores []int) int {
 
 func generarValores() []int {
 	valores := []int{}
-	for i := 0; i < 240000000; i++ {
+	for i := 0; i < 10000000; i++ {
 		valores = append(valores, i)
 	}
 	return valores
