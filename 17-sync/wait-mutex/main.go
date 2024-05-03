@@ -39,3 +39,14 @@ func suma(valores []int) int {
 	}
 	return totalSuma
 }
+
+//  ejemplos en los que puede servir
+// guardar datos en un slice
+// hacer cuentas matematicas
+// hacer peticiones
+
+// ejemplos practicos:
+//  traer los jugadores desde una base de datos
+//  mover los jugadores en el campo de juego
+//  mercado de pases automatico
+// fijarse si todo lo podes hacer concurrente
