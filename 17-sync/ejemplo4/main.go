@@ -87,6 +87,7 @@ func generarRandom(ch chan int, wg *sync.WaitGroup) {
 
 // conclusiones:
 // el close(ch) este donde esté termina con el for range al cerrar el canal
+// (el for igual lee todos los valores y despues cierra)
 // y permite que la funcion siga su curso
 // se le puede agregar un Wg.Add y Wg.Done a una gorrutina con for range
 // siempre y cuando se cierre el canal en algun lugar del codigo (no hace falta que sea en esa funcion)
