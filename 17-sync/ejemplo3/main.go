@@ -12,15 +12,15 @@ func main() {
 	wg.Add(2)
 	go generarRandom(ch, &wg)
 	go generarRandom(ch, &wg)
-	// close(ch)
-	wg.Add(1)
+
 	go func() {
-		defer wg.Done()
 		for str := range ch {
 			fmt.Println(str)
 		}
 	}()
 	wg.Wait()
+	close(ch) // hace que el for range deje de iterar
+	fmt.Println("funcion finalizada")
 }
 func generarRandom(ch chan string, wg *sync.WaitGroup) {
 	defer wg.Done()
