@@ -53,8 +53,9 @@ func (c *Controller) getUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	idParam := params["id"]
+	// params := mux.Vars(r) con la vieja version de http
+	// idParam := params["id"] con la vieja version de http
+	idParam := r.PathValue("id") // con la version nueva de http
 	id, err := strconv.Atoi(idParam)
 
 	if err != nil {
@@ -72,10 +73,9 @@ func (c *Controller) getUser(w http.ResponseWriter, r *http.Request) {
 		if u.Id == id {
 			user = users[index]
 			json.NewEncoder(w).Encode(user)
-		} else {
-			w.WriteHeader(http.StatusNotFound)
 		}
 	}
+	w.WriteHeader(http.StatusNotFound)
 }
 
 func (c *Controller) createUser(w http.ResponseWriter, r *http.Request) {

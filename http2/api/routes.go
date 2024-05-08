@@ -2,18 +2,16 @@ package api
 
 import (
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 // enrutador
 
-func (c *Controller) RegisterRoutes(r *mux.Router) {
-	r.HandleFunc("/", c.renderHome).Methods(http.MethodGet)
-	r.HandleFunc("/users", c.getUsers).Methods(http.MethodGet)
-	r.HandleFunc("/users/", c.getUsers).Methods(http.MethodGet)
-	r.HandleFunc("/users/create", c.createUser).Methods(http.MethodPost)
-	r.HandleFunc("/users/edit/{id}", c.editUser).Methods(http.MethodPut)
-	r.HandleFunc("/users/{id}", c.getUser).Methods(http.MethodGet)
-	r.HandleFunc("/users/delete/{id}", c.deleteUser).Methods(http.MethodDelete)
+func (c *Controller) RegisterRoutes(r *http.ServeMux) {
+	r.HandleFunc("GET /", c.renderHome)
+	r.HandleFunc("GET /users", c.getUsers)
+	r.HandleFunc("GET /users/", c.getUsers)
+	r.HandleFunc("POST /users/create", c.createUser)
+	r.HandleFunc("PUT /users/edit/{id}", c.editUser)
+	r.HandleFunc("GET /users/{id}", c.getUser)
+	r.HandleFunc("DELETE /users/delete/{id}", c.deleteUser)
 }

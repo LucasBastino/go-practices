@@ -5,12 +5,12 @@ import (
 	"net/http"
 
 	"github.com/LucasBastino/practicas-go/http2/api"
-	"github.com/gorilla/mux"
 )
 
 func main() {
-	// instancio un enrutador
-	r := mux.NewRouter()
+	// instancio un enrutador con la vieja version de http
+	// r := mux.NewRouter() con la vieja version de http
+	r := http.NewServeMux() // con la version nueva de http
 
 	// instancio la api controladora
 	a := api.Controller{}
