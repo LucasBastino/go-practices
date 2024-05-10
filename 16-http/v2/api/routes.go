@@ -8,6 +8,7 @@ import (
 
 func (c *Controller) RegisterRoutes(r *http.ServeMux) {
 	r.HandleFunc("GET /", c.renderHome)
+	r.HandleFunc("GET /wait", c.wait)
 	r.HandleFunc("GET /users", c.getUsers)
 	r.HandleFunc("GET /users/", c.getUsers)
 	r.HandleFunc("POST /users/create", c.createUser)

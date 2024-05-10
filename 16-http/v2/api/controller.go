@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/LucasBastino/practicas-go/16-http/v2/models"
 	"github.com/gorilla/schema"
@@ -13,6 +14,11 @@ import (
 // controllers
 
 type Controller struct{}
+
+func (c *Controller) wait(w http.ResponseWriter, r *http.Request) {
+	time.Sleep(7 * time.Second)
+	w.WriteHeader(http.StatusAccepted)
+}
 
 func (c *Controller) renderHome(w http.ResponseWriter, r *http.Request) {
 	str := "este es el home index"
