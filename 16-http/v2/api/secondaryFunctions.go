@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/LucasBastino/practicas-go/http2/models"
+	"github.com/LucasBastino/practicas-go/16-http/v2/models"
 )
 
 func (c *Controller) getPath() string {

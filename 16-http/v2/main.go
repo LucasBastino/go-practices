@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/LucasBastino/practicas-go/http2/api"
+	"github.com/LucasBastino/practicas-go/16-http/v2/api"
 )
 
 func main() {

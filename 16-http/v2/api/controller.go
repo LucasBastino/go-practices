@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/LucasBastino/practicas-go/http2/models"
-	"github.com/gorilla/mux"
+	"github.com/LucasBastino/practicas-go/16-http/v2/models"
 	"github.com/gorilla/schema"
 )
 
@@ -98,9 +97,8 @@ func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 	// recojo las variables escritas en la URL
-	URLParams := mux.Vars(r)
-	// en este caso solo me interesa el id
-	id, err := strconv.Atoi(URLParams["id"])
+	idParam := r.PathValue("id")
+	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		fmt.Println("error converting idParam to int")
 	}
@@ -127,8 +125,7 @@ func (c *Controller) editUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) deleteUser(w http.ResponseWriter, r *http.Request) {
-	userParams := mux.Vars(r)
-	idParam := userParams["id"]
+	idParam := r.PathValue("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		fmt.Println("err converting idParam to int")

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/LucasBastino/practicas-go/16-http/api"
+	"github.com/LucasBastino/practicas-go/16-http/v1/api"
 	"github.com/gorilla/mux"
 )
 
