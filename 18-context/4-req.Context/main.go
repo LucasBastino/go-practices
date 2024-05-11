@@ -19,8 +19,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	select {
 	case <-ctx.Done():
+		// cuando se tira abajo la peticion el context se termina, es algo propio del req.Context()
 		fmt.Println("request is cancelled, context is done")
 	case <-time.After(time.Second * 3):
-		fmt.Println("message printed after 3 seconds")
+		w.Write([]byte("message printed after 3 seconds"))
 	}
 }
