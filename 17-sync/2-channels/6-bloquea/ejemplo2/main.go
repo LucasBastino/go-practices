@@ -29,7 +29,7 @@ func putBooks(books []Book, ch chan *Book) <-chan struct{} {
 			books = append(books, *book)
 		}
 		fmt.Println("ciclo terminado")
-		close(ch)
+		close(ch) // esto me parece que esta mal, no se deberia cerrar el canal aca
 	}()
 	return chEspera
 }
