@@ -32,5 +32,4 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	case <-time.After(2 * time.Second):
 		fmt.Println("pasaron 2 segundos")
 	}
-
 }

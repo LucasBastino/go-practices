@@ -43,5 +43,6 @@ func readBook(ch <-chan *Book, wg *sync.WaitGroup) {
 		book.readed = true
 		fmt.Println(book.name, "readed")
 	}
-
+	// esto me parece que esta mal tambien, el canal deberia cerrarse en algun momento
+	// sino cuando el wg wait llegue a 0 capaz queda algun libro sin leer
 }
