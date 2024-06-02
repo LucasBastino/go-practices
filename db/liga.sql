@@ -1,5 +1,10 @@
 CREATE DATABASE liga;
 USE liga;
+CREATE TABLE afiliado(
+    idAfiliado INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(45),
+    edad INT
+);
 CREATE TABLE equipo(
 idEquipo INT PRIMARY KEY AUTO_INCREMENT,
 nombre VARCHAR(45),
