@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"net/http"
 	"text/template"
 )
 
@@ -11,14 +10,31 @@ type User struct {
 	Age  int
 }
 
+var tmpl *template.Template
+
+func init() {
+	tmpl = template.Must(template.ParseGlob("templates/*.html"))
+
+}
+
 func main() {
-	tmpl, err := template.New("newTemplate").ParseGlob("templates/*.html")
-	if err != nil {
-		fmt.Println("error creating template")
-		panic(err)
+	muxer := http.NewServeMux()
+
+	svr := &http.Server{
+		Addr:    ":8085",
+		Handler: muxer,
 	}
 
-	user := User{"marse", 52}
-	tmpl.ExecuteTemplate(os.Stdout, "example1.html", user)
-	// tmpl.ExecuteTemplate(os.Stdout, "example2.html", user)
+	muxer.HandleFunc("/index", index)
+	muxer.HandleFunc("/about", about)
+	svr.ListenAndServe()
+
+}
+
+func index(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "index.html", nil)
+}
+
+func about(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "about.html", nil)
 }
