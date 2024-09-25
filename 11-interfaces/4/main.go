@@ -1,8 +1,8 @@
-package main
+package asd
 
 import "fmt"
 
-func main() {
+func asd() {
 	c := creadoraDeMember{}
 	params := Params{"lucas", 28}
 	member := creadorCaller(c, params)

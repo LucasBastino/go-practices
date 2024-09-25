@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	fmt.Println("Ejercicios de variables:")
-	// definoVariables()
+	definoVariables()
 	// muestroTiposYValor()
 	// leerYMostrarDatos()
 	// leerYMostrarDatosAvanzado()
@@ -13,15 +13,15 @@ func main() {
 	// mostrarShadowing()
 }
 
-// func definoVariables() {
-// 	var nombre string = "Jose"
-// 	apellido := "Ramirez"
-// 	var nota1 int = 5
-// 	nota2 := 8
-// 	promedio := (float32(nota1+nota2) / 2)
+func definoVariables() {
+	var nombre string = "Jose"
+	apellido := "Ramirez"
+	var nota1 int = 5
+	nota2 := 8
+	promedio := (float32(nota1+nota2) / 2)
 
-// 	fmt.Println("\nDefino variables:", nombre, apellido, nota1, nota2, promedio)
-// }
+	fmt.Println("\nDefino variables:", nombre, apellido, nota1, nota2, promedio)
+}
 
 // func muestroTiposYValor() {
 // 	nombre := "Lucila"
